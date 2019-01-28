@@ -1,4 +1,4 @@
-<p align="center"><img src="https://coltorapps.com/images/r3shaper.png" width="30%"></p>
+<p align="center"><img src="https://coltorapps.com/images/r3shaper.png" width="260px"></p>
 <p align="center">
 ✨ Isolate and normalize the API layer of your front-end app in an abstract way. ✨
 </p>
@@ -163,5 +163,5 @@ None.
 Created by [Sergiu Masurceac](https://twitter.com/masurceac) and [Stratulat Alexandru](https://twitter.com/sandulat).
 
 <a href="https://coltorapps.com/">
-  <img src="https://coltorapps.com/images/logo_transparent.png" width="15%">
+  <img src="https://coltorapps.com/images/logo_transparent.png" width="150px">
 </a>
