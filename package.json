@@ -1,0 +1,34 @@
+{
+  "name": "r3shaper",
+  "version": "0.1.0",
+  "description": "✨ Isolate and normalize the API layer of your front-end app in an abstract way. ✨",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coltor-apps/r3shaper.git"
+  },
+  "keywords": [
+    "api",
+    "request",
+    "response",
+    "api layer",
+    "normalize",
+    "api abstractization",
+    "reshaper",
+    "r3shaper"
+  ],
+  "author": "Coltor Apps",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/coltor-apps/r3shaper/issues"
+  },
+  "homepage": "https://github.com/coltor-apps/r3shaper#readme",
+  "devDependencies": {
+    "@types/node": "^10.12.18",
+    "typescript": "^3.2.4"
+  }
+}
