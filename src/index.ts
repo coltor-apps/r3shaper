@@ -1,3 +1,1 @@
-import { Client } from './Client';
-
-module.exports = Client;
+export * from './Client';
