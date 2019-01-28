@@ -19,13 +19,17 @@ the responses. It provides an abstract _client_ that can be configured to work w
 npm install r3shaper --save
 ```
 
-## Example
+## Client Initialization
 
----
+The client receives a configuration object with these options:
 
-### 1. Client
+| Option      | Type                                                                                                                 | Description                                |
+|-------------|----------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| basePath (optional)    | `string`                                                                                                  | API basepath                               |
+| headers (optional)     | `object`                                                                                                  | API headers                                |
+| apiProvider | [ApiProviderInterface](https://github.com/coltor-apps/r3shaper/blob/master/src/interfaces/api-provider.interface.ts) | A wrapper function for any request library |
 
-In order to start making requests, we have to instantiate a r3shaper client and configure it to use
+In order to start making requests, we have to initialize a r3shaper client and configure it to use
 our preferred request library. In the following example we'll use **Axios**:
 
 ```js
@@ -53,9 +57,36 @@ export default apiClient;
 
 > Note: you can instantiate as many clients as you'd like.
 
-### 2. Resource
+### Resources
 
-Now we can import our new client and define our first resource.
+Once we've initialized a client, it exposes us a list of 8 methods for resources creation.
+
+- ```apiClient.get()```
+
+- ```apiClient.head()```
+
+- ```apiClient.post()```
+
+- ```apiClient.put()```
+
+- ```apiClient.delete()```
+
+- ```apiClient.connect()```
+
+- ```apiClient.options()```
+
+- ```apiClient.trace()```
+
+- ```apiClient.patch()```
+
+Each of these methods receive 2 parameters:
+
+| Parameter    | Type                                                                                                                             | Description                                           |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| path         | `string`                                                                                                                         | API endpoint                                          |
+| transformers (optional) | [TransformersInterface](https://github.com/coltor-apps/r3shaper/blob/master/src/interfaces/transformers.interface.ts)  | An object of request & response normalizing functions. |
+
+Now we can import our new client and define our resources.
 
 ```js
 import apiClient from './apiClient';
@@ -107,7 +138,16 @@ const UserResource = {
 };
 ```
 
-### 3. Resource Usage
+## Resource Usage
+
+Resources return a `Promise` and receive a configuration object of 4 options:
+
+| Option                 | Type     | Description                                              |
+|------------------------|----------|----------------------------------------------------------|
+| body (optional)        | `object` | Request body that will go through `onRequest` normalizer |
+| params (optional)      | `object` | Route params that will be replaced in the URL            |
+| queryParams (optional) | `object` | Request URL query params                                 |
+| headers (optional)     | `object` | Request headers                                          |
 
 ```js
 import UserResource from './UserResource';
