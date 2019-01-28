@@ -1,6 +1,6 @@
 import { KeyStringInterface } from './interfaces/key-string.interface';
 import { ClientConfigInterface } from './interfaces/client-config.interface';
-import { RouteInterface } from './interfaces/Route.interface';
+import { RouteInterface } from './interfaces/route.interface';
 import { ClientInterface } from './interfaces/client.interface';
 import { ApiProviderInterface } from './interfaces/api-provider.interface';
 import { FetchFunctionInterface } from './interfaces/fetch-function.interface';
