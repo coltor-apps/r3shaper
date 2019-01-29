@@ -55,7 +55,7 @@ export class Resource implements ResourceInterface {
 
   private _replacePathParams(params: KeyStringInterface = {}, path: string) {
     const paramsReplacer = (replaceablePath: string, key: string) =>
-      replaceablePath.replace(new RegExp(`{${key}}`, 'g'), params[key]);
+      replaceablePath.replace(new RegExp(`{${key}}`, 'g'), <string>params[key]);
 
     return Object.keys(params).reduce(paramsReplacer, path);
   }
@@ -65,7 +65,7 @@ export class Resource implements ResourceInterface {
     path: string
   ) {
     const queryParamsAsString = Object.keys(queryParams)
-      .map(key => `${key}=${encodeURIComponent(queryParams[key])}`)
+      .map(key => `${key}=${encodeURIComponent(<string>queryParams[key])}`)
       .join('&');
 
     return `${path}?${queryParamsAsString}`;
