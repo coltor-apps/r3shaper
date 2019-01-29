@@ -3,6 +3,15 @@
 ✨ Isolate and normalize the API layer of your front-end app in an abstract way. ✨
 </p>
 
+<p align="center">
+<img src="https://travis-ci.org/coltor-apps/r3shaper.svg?branch=master">
+<img src="https://badge.fury.io/js/r3shaper.svg">
+<img src="https://img.shields.io/github/license/coltor-apps/r3shaper.svg">
+<a href="https://twitter.com/home?status=https%3A//github.com/coltor-apps/r3shaper">
+  <img src="https://img.shields.io/twitter/url/https/github.com/coltor-apps/r3shaper.svg?style=social">
+</a>
+</p>
+
 ## Motivation
 
 If you've ever built JS front-end apps that consume 3rd party APIs, you've might noticed that sometimes it's
