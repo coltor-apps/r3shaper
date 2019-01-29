@@ -92,7 +92,7 @@ Each of these methods receive 2 parameters:
 
 | Parameter    | Type                                                                                                                             | Description                                           |
 |--------------|----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
-| path         | `string`                                                                                                                         | API endpoint                                          |
+| path         | `string`                                                                                                                         | API endpoint. Use `{parameter}` for route parameters.                                          |
 | transformers (optional) | [TransformersInterface](https://github.com/coltor-apps/r3shaper/blob/master/src/interfaces/transformers.interface.ts)  | An object of request & response normalizing functions. |
 
 Now we can import our new client and define our resources.
