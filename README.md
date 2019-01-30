@@ -93,7 +93,7 @@ Each of these methods receive 2 parameters:
 | Parameter    | Type                                                                                                                             | Description                                           |
 |--------------|----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
 | path         | `string`                                                                                                                         | API endpoint. Use `{parameter}` for route parameters.                                          |
-| transformers (optional) | [TransformersInterface](https://github.com/coltor-apps/r3shaper/blob/master/src/interfaces/transformers.interface.ts)  | An object of request & response normalizing functions. |
+| transformers (optional) | [TransformersInterface](https://github.com/coltor-apps/r3shaper/blob/master/src/interfaces/transformers.interface.ts)  | An object with `onRequest` & `onResponse` normalizing functions. |
 
 Now we can import our new client and define our resources.
 
@@ -149,7 +149,7 @@ const UserResource = {
 
 ## Resource Usage
 
-Resources return a `Promise` and receive a configuration object of 4 options:
+Resources return a `Promise` and receive a configuration object with 4 options:
 
 | Option                 | Type     | Description                                              |
 |------------------------|----------|----------------------------------------------------------|
@@ -157,6 +157,8 @@ Resources return a `Promise` and receive a configuration object of 4 options:
 | params (optional)      | `object` | Route params that will be replaced in the URL            |
 | queryParams (optional) | `object` | Request URL query params                                 |
 | headers (optional)     | `object` | Request headers                                          |
+
+The returned result by this `Promise` is the API response that went through `onResponse` normalizer.
 
 ```js
 import UserResource from './UserResource';
