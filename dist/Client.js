@@ -5,13 +5,9 @@ const Resource_1 = require("./Resource");
 const Route_1 = require("./Route");
 class Client {
     constructor(config) {
-        const staticConfig = Client.config || {};
-        this.basePath = config.basePath || staticConfig.basePath || '/';
-        this.headers = config.headers || staticConfig.headers || {};
-        if (!config.apiProvider && !staticConfig.apiProvider) {
-            throw new Error('API Provider function is required');
-        }
-        this.apiProvider = config.apiProvider || staticConfig.apiProvider;
+        this.basePath = config.basePath || Client.config.basePath || '/';
+        this.headers = Object.assign({}, Client.config.headers, config.headers);
+        this.apiProvider = config.apiProvider || Client.config.apiProvider;
     }
     get(path, transformers = {}) {
         return this._createResource(new Route_1.Route(methods_enum_1.Methods.GET, path), transformers.onRequest, transformers.onResponse);
@@ -44,4 +40,7 @@ class Client {
         return new Resource_1.Resource(this, route, onRequest, onResponse).fetch;
     }
 }
+Client.config = {
+    apiProvider: () => null,
+};
 exports.Client = Client;
