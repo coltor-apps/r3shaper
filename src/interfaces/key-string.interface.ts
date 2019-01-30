@@ -1,3 +1,3 @@
 export interface KeyStringInterface {
-  [key: string]: string;
+  [key: string]: string | boolean | number;
 }
