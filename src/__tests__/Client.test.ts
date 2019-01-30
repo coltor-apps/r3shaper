@@ -210,3 +210,33 @@ test('Test client resource interceptors', () => {
       });
     });
 });
+
+test('Test client static & instance headers merging', () => {
+  const staticHeaders = {
+    Accept: 'application/json',
+  };
+
+  const instanceHeaders = {
+    'Content-Type': 'application/json',
+  };
+
+  Client.config.headers = staticHeaders;
+
+  const client = new Client({
+    headers: instanceHeaders,
+    basePath: 'host',
+    apiProvider: (options, onError, onSuccess) => onSuccess({ options }),
+  });
+
+  return client
+    .get('/')()
+    .then(({ options }) => {
+      expect(options).toEqual({
+        path: 'host/',
+        method: 'GET',
+        body: undefined,
+        params: undefined,
+        headers: { ...staticHeaders, ...instanceHeaders },
+      });
+    });
+});

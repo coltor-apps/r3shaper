@@ -10,21 +10,18 @@ import { Resource } from './Resource';
 import { Route } from './Route';
 
 export class Client implements ClientInterface {
-  static config: ClientConfigInterface;
+  static config: ClientConfigInterface = {
+    apiProvider: () => null,
+  };
 
   public basePath: string;
   public headers: KeyStringInterface;
   public apiProvider: ApiProviderInterface;
 
   constructor(config: ClientConfigInterface) {
-    const staticConfig = Client.config || {};
-
-    this.basePath = config.basePath || staticConfig.basePath || '/';
-    this.headers = config.headers || staticConfig.headers || {};
-    if (!config.apiProvider && !staticConfig.apiProvider) {
-      throw new Error('API Provider function is required');
-    }
-    this.apiProvider = config.apiProvider || staticConfig.apiProvider;
+    this.basePath = config.basePath || Client.config.basePath || '/';
+    this.headers = { ...Client.config.headers, ...config.headers };
+    this.apiProvider = config.apiProvider || Client.config.apiProvider;
   }
 
   public get(path: string, transformers: TransformersInterface = {}) {
