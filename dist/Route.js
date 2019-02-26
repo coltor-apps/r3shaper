@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class Route {
-    constructor(method, path) {
+var Route = /** @class */ (function () {
+    function Route(method, path) {
         this.method = method;
         this.path = path;
     }
-}
+    return Route;
+}());
 exports.Route = Route;
