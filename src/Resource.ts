@@ -25,8 +25,9 @@ export class Resource implements ResourceInterface {
     params,
     queryParams,
     headers,
+    meta,
   }: FetchBodyInterface = {}) => {
-    const normalizedBody = body ? this.interceptors.onRequest(body) : undefined;
+    const normalizedBody = body ? this.interceptors.onRequest(body, meta) : undefined;
 
     let fullPath = `${this.client.basePath}${this.route.path}`;
 
@@ -44,11 +45,12 @@ export class Resource implements ResourceInterface {
       method: this.route.method,
       headers: { ...this.client.headers, ...headers },
       params: params,
+      meta: meta,
     };
 
     return new Promise((resolve, reject) => {
       this.client.apiProvider(requestOptions, reject, (response: any) =>
-        resolve(this.interceptors.onResponse(response))
+        resolve(this.interceptors.onResponse(response, meta))
       );
     });
   };
