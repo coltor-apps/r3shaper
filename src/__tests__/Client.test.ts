@@ -240,3 +240,51 @@ test('Test client static & instance headers merging', () => {
       });
     });
 });
+
+test('Test client resource with meta', () => {
+  const data = {
+    foo: 'bar',
+  };
+
+  const meta = {
+    userType: 'generalissimus',
+  };
+
+  const client = new Client({
+    basePath: 'host',
+    apiProvider: (options, onError, onSuccess) => onSuccess(options),
+  });
+
+  return Promise.all([
+    client
+      .post('/')()
+      .then(options => {
+        expect(options.meta).toBe(undefined);
+      }),
+    client
+      .post('/')({ meta })
+      .then(options => {
+        expect(options.meta).toEqual(meta);
+      }),
+    client
+      .post('/', {
+        onRequest: (body, meta) => {
+          expect(meta).toEqual(meta);
+          return body;
+        },
+      })({ meta, body: data })
+      .then(options => {
+        expect(options.meta).toEqual(meta);
+      }),
+    client
+      .post('/', {
+        onResponse: (body, meta) => {
+          expect(meta).toEqual(meta);
+          return body;
+        },
+      })({ meta, body: data })
+      .then(options => {
+        expect(options.meta).toEqual(meta);
+      }),
+  ]);
+});
