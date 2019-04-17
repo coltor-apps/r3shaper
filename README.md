@@ -1,6 +1,6 @@
 <p align="center"><img src="https://coltorapps.com/images/r3shaper.png" width="260px"></p>
 <p align="center">
-✨ Isolate and normalize the API layer of your front-end app in an abstract way. ✨
+✨ Isolate and normalize the API layer of your app. ✨
 </p>
 
 <p align="center">
@@ -14,13 +14,13 @@
 
 ## Motivation
 
-If you've ever built JS front-end apps that consume 3rd party APIs, you've might noticed that sometimes it's
-hard to work with data that's not structured in the "JS preferred way".
+Keeping the API layer isolated and organized can be a real pain. 😩
+
+Where can I ergonomically normalize my requests and responses? What if tomorrow I can't or don't want to use the same request library I've used before? How can I reuse my API layer on another JS platform without depending on a request library? Are my requests isolated and testable? Can I intercept and debug all of my requests and responses?
 
 ## Solution
 
-**r3shaper** is a tiny tool that'll help you to organize and separate the API layer, normalize your requests and normalize
-the responses. It provides an abstract _client_ that can be configured to work with _any_ request library.
+**r3shaper** is a tiny tool that'll help you organize and isolate your API layer, as well as normalize your requests and responses. It provides an abstract _client_ that can be configured to work with _any_ request library. Effortlessly reuse your API resources on other JS platforms.
 
 ## Installation
 
@@ -30,16 +30,15 @@ npm install r3shaper --save
 
 ## Client Initialization
 
-The client receives a configuration object with these options:
+The client receives a configuration object with 3 options:
 
 | Option      | Type                                                                                                                 | Description                                |
 |-------------|----------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
-| basePath (optional)    | `string`                                                                                                  | API basepath                               |
-| headers (optional)     | `object`                                                                                                  | API headers                                |
-| apiProvider | [ApiProviderInterface](https://github.com/coltor-apps/r3shaper/blob/master/src/interfaces/api-provider.interface.ts) | A wrapper function for any request library |
+| basePath (optional)    | `string`                                                                                                  | API basepath.                               |
+| headers (optional)     | `object`                                                                                                  | API headers.                                |
+| apiProvider | `function({ body?, path, method, headers?, params?, meta? }, onError, onSuccess)` | Wrapper function around the request library. |
 
-In order to start making requests, we have to initialize a r3shaper client and configure it to use
-our preferred request library. In the following example we'll use **Axios**:
+In order to start making requests, we have to initialize a r3shaper client and configure it to use our preferred request library. In the following example we'll use **Axios**:
 
 ```js
 import axios from 'axios';
@@ -50,14 +49,20 @@ const apiClient = new Client({
   headers: {
     'Content-Type': 'application/json',
   },
-  apiProvider: ({ body, path, headers, method }, onError, onSuccess) =>
+  apiProvider: ({ body, path, headers, method, meta }, onError, onSuccess) =>
     axios({
       url: path,
       data: body,
       headers,
-      method: String(method).toLowerCase(),
+      method,
     })
-      .then(({ data }) => onSuccess(data))
+      .then(({ data }) => {
+        if (meta.notification) {
+          alert(meta.notification);
+        }
+
+        onSuccess(data);
+      })
       .catch(onError),
 });
 
@@ -92,8 +97,8 @@ Each of these methods receive 2 parameters:
 
 | Parameter    | Type                                                                                                                             | Description                                           |
 |--------------|----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
-| path         | `string`                                                                                                                         | API endpoint. Use `{parameter}` for route parameters.                                          |
-| transformers (optional) | [TransformersInterface](https://github.com/coltor-apps/r3shaper/blob/master/src/interfaces/transformers.interface.ts)  | An object with `onRequest` & `onResponse` normalizing functions. |
+| path         | `string`                                                                                                                         | API endpoint. Use brackets for parameters: `/user/{id}`.                                          |
+| interceptors (optional) | `{ onRequest?, onResponse? }`  | An object with request and response normalizing functions. |
 
 Now we can import our new client and define our resources.
 
@@ -105,9 +110,9 @@ const UserResource = {
    * Get the list of users.
    */
   index: apiClient.get('/api/users', {
-    onResponse: ({ data }) =>
-      data.map(({ first_name, last_name, ...fields }) => ({
-        ...fields,
+    // Normalize the response
+    onResponse: (data, meta) =>
+      data.map(({ first_name, last_name }) => ({
         firstName: first_name,
         lastName: last_name,
       })),
@@ -116,8 +121,8 @@ const UserResource = {
    * Get a single user.
    */
   show: apiClient.get('/api/users/{id}', {
-    onResponse: ({ first_name, last_name, ...fields }) => ({
-      ...fields,
+    // Normalize the response
+    onResponse: ({ first_name, last_name }, meta) => ({
       firstName: first_name,
       lastName: last_name,
     }),
@@ -126,8 +131,9 @@ const UserResource = {
    * Store a new user.
    */
   store: apiClient.post('/api/users', {
-    onRequest: ({ firstName, lastName, job }) => ({
-      name: `${firstName} ${lastName}`,
+    // Normalize the request
+    onRequest: ({ firstName, lastName, job }, meta) => ({
+      full_name: `${firstName} ${lastName}`,
       job,
     }),
   }),
@@ -135,8 +141,9 @@ const UserResource = {
    * Update a user.
    */
   update: apiClient.patch('/api/users/{id}', {
-    onRequest: ({ firstName, lastName, job }) => ({
-      name: `${firstName} ${lastName}`,
+    // Normalize the request
+    onRequest: ({ firstName, lastName, job }, meta) => ({
+      full_name: `${firstName} ${lastName}`,
       job,
     }),
   }),
@@ -153,10 +160,11 @@ Resources return a `Promise` and receive a configuration object with 4 options:
 
 | Option                 | Type     | Description                                              |
 |------------------------|----------|----------------------------------------------------------|
-| body (optional)        | `object` | Request body that will go through `onRequest` normalizer |
-| params (optional)      | `object` | Route params that will be replaced in the URL            |
-| queryParams (optional) | `object` | Request URL query params                                 |
-| headers (optional)     | `object` | Request headers                                          |
+| body (optional)        | `object` | Request body that will go through `onRequest` normalizer. |
+| params (optional)      | `object` | Route params that will be replaced in the URL.            |
+| queryParams (optional) | `object` | Request URL query params.                                 |
+| headers (optional)     | `object` | Request headers.                                         |
+| meta (optional)        | `object` | Additional data (anything you'd like to use later).      |
 
 The returned result by this `Promise` is the API response that went through `onResponse` normalizer.
 
@@ -181,6 +189,9 @@ UserResource.store({
     lastName: 'Doe',
     job: 'Procrastinator',
   },
+  meta: {
+    notification: 'User has been created',
+  },
 }).then(user => {
   /* ... */
 });
@@ -194,6 +205,9 @@ UserResource.update({
     lastName: 'Doe',
     job: 'Procrastinator',
   },
+  meta: {
+    notification: 'User 1 has been updated',
+  },
 }).then(user => {
   /* ... */
 });
@@ -201,6 +215,9 @@ UserResource.update({
 UserResource.delete({
   params: {
     id: 1,
+  },
+  meta: {
+    notification: 'User 1 has been deleted',
   },
 });
 ```

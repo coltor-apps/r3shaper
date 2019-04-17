@@ -1,4 +1,5 @@
+import { MetaType } from '../types/meta.type';
 export interface TransformersInterface {
-    onRequest?: (data: any) => any;
-    onResponse?: (data: any) => any;
+    onRequest?: (data: any, meta?: MetaType) => any;
+    onResponse?: (data: any, meta?: MetaType) => any;
 }

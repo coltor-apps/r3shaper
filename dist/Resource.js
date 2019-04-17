@@ -19,8 +19,8 @@ var Resource = /** @class */ (function () {
         this.client = client;
         this.route = route;
         this.fetch = function (_a) {
-            var _b = _a === void 0 ? {} : _a, body = _b.body, params = _b.params, queryParams = _b.queryParams, headers = _b.headers;
-            var normalizedBody = body ? _this.interceptors.onRequest(body) : undefined;
+            var _b = _a === void 0 ? {} : _a, body = _b.body, params = _b.params, queryParams = _b.queryParams, headers = _b.headers, meta = _b.meta;
+            var normalizedBody = body ? _this.interceptors.onRequest(body, meta) : undefined;
             var fullPath = "" + _this.client.basePath + _this.route.path;
             if (params) {
                 fullPath = _this._replacePathParams(params, fullPath);
@@ -34,10 +34,11 @@ var Resource = /** @class */ (function () {
                 method: _this.route.method,
                 headers: __assign({}, _this.client.headers, headers),
                 params: params,
+                meta: meta,
             };
             return new Promise(function (resolve, reject) {
                 _this.client.apiProvider(requestOptions, reject, function (response) {
-                    return resolve(_this.interceptors.onResponse(response));
+                    return resolve(_this.interceptors.onResponse(response, meta));
                 });
             });
         };

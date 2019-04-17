@@ -1,7 +1,7 @@
 {
   "name": "r3shaper",
-  "version": "0.1.5",
-  "description": "✨ Isolate and normalize the API layer of your front-end app in an abstract way. ✨",
+  "version": "0.1.6",
+  "description": "Isolate and normalize the API layer of your app.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {

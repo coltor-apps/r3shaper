@@ -1,5 +1,6 @@
-import { KeyStringInterface } from './key-string.interface';
 import { Methods } from '../enums/methods.enum';
+import { MetaType } from '../types/meta.type';
+import { KeyStringInterface } from './key-string.interface';
 
 export interface ApiOptionsInterface {
   body?: any;
@@ -7,4 +8,5 @@ export interface ApiOptionsInterface {
   method: Methods;
   headers?: KeyStringInterface;
   params?: KeyStringInterface;
+  meta?: MetaType;
 }
