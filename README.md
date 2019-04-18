@@ -49,7 +49,7 @@ const apiClient = new Client({
   headers: {
     'Content-Type': 'application/json',
   },
-  apiProvider: ({ body, path, headers, method, meta }, onError, onSuccess) =>
+  apiProvider: ({ body, path, headers, method, meta = {} }, onError, onSuccess) =>
     axios({
       url: path,
       data: body,
