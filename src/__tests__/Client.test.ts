@@ -268,8 +268,8 @@ test('Test client resource with meta', () => {
       }),
     client
       .post('/', {
-        onRequest: (body, meta) => {
-          expect(meta).toEqual(meta);
+        onRequest: (body, clientMeta) => {
+          expect(clientMeta).toEqual(meta);
           return body;
         },
       })({ meta, body: data })
@@ -278,8 +278,8 @@ test('Test client resource with meta', () => {
       }),
     client
       .post('/', {
-        onResponse: (body, meta) => {
-          expect(meta).toEqual(meta);
+        onResponse: (body, clientMeta) => {
+          expect(clientMeta).toEqual(meta);
           return body;
         },
       })({ meta, body: data })
