@@ -7,7 +7,7 @@ import { FetchFunctionInterface } from './interfaces/fetch-function.interface';
 import { Client } from './Client';
 import { Route } from './Route';
 
-export class Resource implements ResourceInterface {
+export class Resource<T = any, S = FetchBodyInterface | void> implements ResourceInterface {
   private interceptors: InterceptorsInterface;
 
   constructor(
@@ -20,14 +20,12 @@ export class Resource implements ResourceInterface {
     this.interceptors = { onRequest, onResponse };
   }
 
-  public fetch: FetchFunctionInterface = ({
-    body,
-    params,
-    queryParams,
-    headers,
-    meta,
-  }: FetchBodyInterface = {}) => {
-    const normalizedBody = body ? this.interceptors.onRequest(body, meta) : undefined;
+  public fetch: FetchFunctionInterface<T, S> = (options: S) => {
+    const { body, params, queryParams, headers, meta } = (options || {}) as FetchBodyInterface;
+
+    const normalizedBody = body
+      ? this.interceptors.onRequest(body, meta)
+      : undefined;
 
     let fullPath = `${this.client.basePath}${this.route.path}`;
 

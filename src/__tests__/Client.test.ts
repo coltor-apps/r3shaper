@@ -1,4 +1,5 @@
 import { Client } from '../Client';
+import { Methods } from '../enums/methods.enum';
 
 test('Test client initialization', () => {
   const basePath = '/';
@@ -239,6 +240,76 @@ test('Test client static & instance headers merging', () => {
         headers: { ...staticHeaders, ...instanceHeaders },
       });
     });
+});
+
+test('Test client resource generic output & options', () => {
+  const client = new Client({
+    basePath: 'host',
+    apiProvider: (options, onError, onSuccess) =>
+      onSuccess({
+        foo: 'test',
+      }),
+  });
+
+  type InputEntity = {
+    foo: String;
+  };
+
+  type OutputEntity = {
+    bar: String;
+  };
+
+  const normalizer = (data: InputEntity): OutputEntity => ({
+    bar: data.foo,
+  });
+
+  return Promise.all([
+    client
+      .post<OutputEntity>('/', {
+        onResponse: normalizer,
+      })()
+      .then(response => {
+        expect(response).toEqual({
+          bar: 'test',
+        });
+      }),
+
+    client
+      .post<OutputEntity, { params: { id: Number }; body: { test: Number } }>(
+        '/{id}',
+        {
+          onResponse: normalizer,
+        }
+      )({
+        params: { id: 1 },
+        body: { test: 1}
+      })
+      .then(response => {
+        expect(response).toEqual({
+          bar: 'test',
+        });
+      }),
+
+    client
+      .post<OutputEntity, { params: { id: Number } } | void>('/{id}', {
+        onResponse: normalizer,
+      })()
+      .then(response => {
+        expect(response).toEqual({
+          bar: 'test',
+        });
+      }),
+
+    client
+      .post<OutputEntity, { params?: { id: Number } }>('/{id}', {
+        onResponse: normalizer,
+      })({})
+      .then(response => {
+        expect(response).toEqual({
+          bar: 'test',
+        });
+      }),
+  ]);
 });
 
 test('Test client resource with meta', () => {

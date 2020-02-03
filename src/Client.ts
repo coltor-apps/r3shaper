@@ -8,6 +8,7 @@ import { TransformersInterface } from './interfaces/transformers.interface';
 import { Methods } from './enums/methods.enum';
 import { Resource } from './Resource';
 import { Route } from './Route';
+import { FetchBodyInterface } from './interfaces/fetch-body.interface';
 
 export class Client implements ClientInterface {
   static config: ClientConfigInterface = {
@@ -24,83 +25,110 @@ export class Client implements ClientInterface {
     this.apiProvider = config.apiProvider || Client.config.apiProvider;
   }
 
-  public get(path: string, transformers: TransformersInterface = {}) {
-    return this._createResource(
+  public get<T = any, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T> = {}
+  ): FetchFunctionInterface<T, S> {
+    return this._createResource<T, S>(
       new Route(Methods.GET, path),
       transformers.onRequest,
       transformers.onResponse
     );
   }
 
-  public head(path: string, transformers: TransformersInterface = {}) {
-    return this._createResource(
+  public head<T = any, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T> = {}
+  ): FetchFunctionInterface<T, S> {
+    return this._createResource<T, S>(
       new Route(Methods.HEAD, path),
       transformers.onRequest,
       transformers.onResponse
     );
   }
 
-  public post(path: string, transformers: TransformersInterface = {}) {
-    return this._createResource(
+  public post<T = any, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T> = {}
+  ): FetchFunctionInterface<T, S> {
+    return this._createResource<T, S>(
       new Route(Methods.POST, path),
       transformers.onRequest,
       transformers.onResponse
     );
   }
 
-  public put(path: string, transformers: TransformersInterface = {}) {
-    return this._createResource(
+  public put<T = any, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T> = {}
+  ): FetchFunctionInterface<T, S> {
+    return this._createResource<T, S>(
       new Route(Methods.PUT, path),
       transformers.onRequest,
       transformers.onResponse
     );
   }
 
-  public delete(path: string, transformers: TransformersInterface = {}) {
-    return this._createResource(
+  public delete<T = any, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T> = {}
+  ): FetchFunctionInterface<T, S> {
+    return this._createResource<T, S>(
       new Route(Methods.DELETE, path),
       transformers.onRequest,
       transformers.onResponse
     );
   }
 
-  public connect(path: string, transformers: TransformersInterface = {}) {
-    return this._createResource(
+  public connect<T = any, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T> = {}
+  ): FetchFunctionInterface<T, S> {
+    return this._createResource<T, S>(
       new Route(Methods.CONNECT, path),
       transformers.onRequest,
       transformers.onResponse
     );
   }
 
-  public options(path: string, transformers: TransformersInterface = {}) {
-    return this._createResource(
+  public options<T = any, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T> = {}
+  ): FetchFunctionInterface<T, S> {
+    return this._createResource<T, S>(
       new Route(Methods.OPTIONS, path),
       transformers.onRequest,
       transformers.onResponse
     );
   }
 
-  public trace(path: string, transformers: TransformersInterface = {}) {
-    return this._createResource(
+  public trace<T = any, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T> = {}
+  ): FetchFunctionInterface<T, S> {
+    return this._createResource<T, S>(
       new Route(Methods.TRACE, path),
       transformers.onRequest,
       transformers.onResponse
     );
   }
 
-  public patch(path: string, transformers: TransformersInterface = {}) {
-    return this._createResource(
+  public patch<T = any, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T> = {}
+  ): FetchFunctionInterface<T, S> {
+    return this._createResource<T, S>(
       new Route(Methods.PATCH, path),
       transformers.onRequest,
       transformers.onResponse
     );
   }
 
-  private _createResource(
+  private _createResource<T = any, S = FetchBodyInterface | void>(
     route: RouteInterface,
     onRequest?: Function,
     onResponse?: Function
-  ): FetchFunctionInterface {
-    return new Resource(this, route, onRequest, onResponse).fetch;
+  ) {
+    return new Resource<T, S>(this, route, onRequest, onResponse).fetch;
   }
 }

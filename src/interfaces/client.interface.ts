@@ -1,15 +1,43 @@
 import { ClientConfigInterface } from './client-config.interface';
 import { FetchFunctionInterface } from './fetch-function.interface';
 import { TransformersInterface } from './transformers.interface';
+import { FetchBodyInterface } from './fetch-body.interface';
 
 export interface ClientInterface extends ClientConfigInterface {
-  get(path: string, transformers: TransformersInterface): FetchFunctionInterface;
-  head(path: string, transformers: TransformersInterface): FetchFunctionInterface;
-  post(path: string, transformers: TransformersInterface): FetchFunctionInterface;
-  put(path: string, transformers: TransformersInterface): FetchFunctionInterface;
-  delete(path: string, transformers: TransformersInterface): FetchFunctionInterface;
-  connect(path: string, transformers: TransformersInterface): FetchFunctionInterface;
-  options(path: string, transformers: TransformersInterface): FetchFunctionInterface;
-  trace(path: string, transformers: TransformersInterface): FetchFunctionInterface;
-  patch(path: string, transformers: TransformersInterface): FetchFunctionInterface;
+  get<T, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T>
+  ): FetchFunctionInterface<T, S>;
+  head<T, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T>
+  ): FetchFunctionInterface<T, S>;
+  post<T, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T>
+  ): FetchFunctionInterface<T, S>;
+  put<T, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T>
+  ): FetchFunctionInterface<T, S>;
+  delete<T, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T>
+  ): FetchFunctionInterface<T, S>;
+  connect<T, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T>
+  ): FetchFunctionInterface<T, S>;
+  options<T, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T>
+  ): FetchFunctionInterface<T, S>;
+  trace<T, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T>
+  ): FetchFunctionInterface<T, S>;
+  patch<T, S = FetchBodyInterface | void>(
+    path: string,
+    transformers: TransformersInterface<T>
+  ): FetchFunctionInterface<T, S>;
 }
