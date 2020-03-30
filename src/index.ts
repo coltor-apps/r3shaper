@@ -61,6 +61,7 @@ export const createClient: ClientOptions = options => {
   const apiProvider: ApiProvider = (config, ...callbacks) =>
     options.apiProvider(
       {
+        ...config,
         path: options.basePath
           ? `${options.basePath}${config.path}`
           : config.path,

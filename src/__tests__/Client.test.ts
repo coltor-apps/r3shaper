@@ -88,4 +88,25 @@ describe('Client', () => {
       });
     });
   });
+
+  test('It resolves with body', () => {
+    const client = createClient({
+      apiProvider: ({ body }, onSuccess) =>
+        onSuccess({
+          body,
+        }),
+    });
+
+    clientMethods.forEach(async method => {
+      const { body } = await client[method]('/')({
+        body: {
+          test: 'test',
+        },
+      });
+
+      expect(body).toEqual({
+        test: 'test',
+      });
+    });
+  });
 });
