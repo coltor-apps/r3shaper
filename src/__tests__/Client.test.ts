@@ -1,17 +1,5 @@
-import { Client } from '../types';
 import { createClient } from '../';
-
-const clientMethods = [
-  'get',
-  'head',
-  'post',
-  'put',
-  'delete',
-  'connect',
-  'options',
-  'trace',
-  'patch',
-] as (keyof Client)[];
+import { clientMethods } from './clientMethods';
 
 describe('Client', () => {
   test('It can basically initialize', () => {
