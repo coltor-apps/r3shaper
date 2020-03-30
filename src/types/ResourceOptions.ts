@@ -6,6 +6,6 @@ export type ResourceOptions = {
     apiProvider: ApiProvider,
     method: Methods,
     path: string,
-    interceptors?: Interceptors
+    interceptors?: Interceptors<T>
   ): Resource<T>;
 };

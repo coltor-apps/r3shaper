@@ -46,4 +46,26 @@ describe('Resource', () => {
       expect(data).toEqual('test');
     });
   });
+
+  test('It resolves mapped data with generic', () => {
+    const client = createClient({
+      apiProvider: (options, onSuccess) => {
+        onSuccess({ data: 'test' });
+      },
+    });
+
+    clientMethods.forEach(async method => {
+      const resource = client[method]<{ data: string }>('/', {
+        onResponse: () => ({
+          data: 'test2',
+        }),
+      });
+
+      const { data } = await resource();
+
+      expect(typeof data).toEqual('string');
+
+      expect(data).toEqual('test2');
+    });
+  });
 });
