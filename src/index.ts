@@ -57,16 +57,29 @@ const clientResource: (
 ) => ClientResource = (apiProvider, method) => (path, interceptors) =>
   createResource(apiProvider, method, path, interceptors);
 
-export const createClient: ClientOptions = options => ({
-  basePath: options.basePath,
-  headers: options.headers,
-  get: clientResource(options.apiProvider, Methods.GET),
-  head: clientResource(options.apiProvider, Methods.HEAD),
-  post: clientResource(options.apiProvider, Methods.POST),
-  put: clientResource(options.apiProvider, Methods.PUT),
-  delete: clientResource(options.apiProvider, Methods.DELETE),
-  connect: clientResource(options.apiProvider, Methods.CONNECT),
-  options: clientResource(options.apiProvider, Methods.OPTIONS),
-  trace: clientResource(options.apiProvider, Methods.TRACE),
-  patch: clientResource(options.apiProvider, Methods.PATCH),
-});
+export const createClient: ClientOptions = options => {
+  const apiProvider: ApiProvider = (config, ...callbacks) =>
+    options.apiProvider(
+      {
+        path: options.basePath
+          ? `${options.basePath}${config.path}`
+          : config.path,
+        headers: { ...options.headers, ...config.headers },
+      },
+      ...callbacks
+    );
+
+  return {
+    basePath: options.basePath,
+    headers: options.headers,
+    get: clientResource(apiProvider, Methods.GET),
+    head: clientResource(apiProvider, Methods.HEAD),
+    post: clientResource(apiProvider, Methods.POST),
+    put: clientResource(apiProvider, Methods.PUT),
+    delete: clientResource(apiProvider, Methods.DELETE),
+    connect: clientResource(apiProvider, Methods.CONNECT),
+    options: clientResource(apiProvider, Methods.OPTIONS),
+    trace: clientResource(apiProvider, Methods.TRACE),
+    patch: clientResource(apiProvider, Methods.PATCH),
+  };
+};
