@@ -1,10 +1,10 @@
-import { Methods } from './enums';
 import {
   ResourcePromise,
   ResourceOptions,
   ApiProvider,
   ClientResource,
   ClientOptions,
+  Methods,
 } from './types';
 import { addQueryParams, replacePathParams } from './utils';
 
@@ -72,14 +72,12 @@ export const createClient: ClientOptions = options => {
   return {
     basePath: options.basePath,
     headers: options.headers,
-    get: clientResource(apiProvider, Methods.GET),
-    head: clientResource(apiProvider, Methods.HEAD),
-    post: clientResource(apiProvider, Methods.POST),
-    put: clientResource(apiProvider, Methods.PUT),
-    delete: clientResource(apiProvider, Methods.DELETE),
-    connect: clientResource(apiProvider, Methods.CONNECT),
-    options: clientResource(apiProvider, Methods.OPTIONS),
-    trace: clientResource(apiProvider, Methods.TRACE),
-    patch: clientResource(apiProvider, Methods.PATCH),
+    get: clientResource(apiProvider, 'GET'),
+    head: clientResource(apiProvider, 'HEAD'),
+    post: clientResource(apiProvider, 'POST'),
+    put: clientResource(apiProvider, 'PUT'),
+    delete: clientResource(apiProvider, 'DELETE'),
+    options: clientResource(apiProvider, 'OPTIONS'),
+    patch: clientResource(apiProvider, 'PATCH'),
   };
 };

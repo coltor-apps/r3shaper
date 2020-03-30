@@ -1,5 +1,5 @@
-import { Methods } from '../enums';
 import { ApiProvider, Interceptors } from './';
+import { Methods } from './Methods';
 
 export type ResourcePromise = (options: {
   apiProvider: ApiProvider;

@@ -6,9 +6,7 @@ export type Client = {
   post: ClientResource;
   put: ClientResource;
   delete: ClientResource;
-  connect: ClientResource;
   options: ClientResource;
-  trace: ClientResource;
   patch: ClientResource;
   basePath?: string;
   headers?: object;

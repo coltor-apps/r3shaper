@@ -8,3 +8,4 @@ export * from './Resource';
 export * from './ResourceOptions';
 export * from './ResourcePromise';
 export * from './ResponseCallback';
+export * from './Methods';

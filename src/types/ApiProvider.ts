@@ -1,5 +1,5 @@
-import { Methods } from '../enums';
 import { ResponseCallback } from './';
+import { Methods } from './Methods';
 
 export type ApiProvider = {
   (

@@ -1,5 +1,5 @@
-import { Methods } from '../enums';
 import { ApiProvider, Interceptors, Resource } from './';
+import { Methods } from './Methods';
 
 export type ResourceOptions = {
   <T>(
