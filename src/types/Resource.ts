@@ -5,4 +5,5 @@ export type Resource<T> = (options?: {
   headers?: object;
   params?: KeyStringTMap<string | number>;
   queryParams?: KeyStringTMap<string | number>;
+  meta?: any;
 }) => Promise<T>;

@@ -8,4 +8,5 @@ export type ResourcePromise = (options: {
   body: any;
   interceptors: Interceptors;
   headers?: object;
+  meta?: any;
 }) => Promise<any>;

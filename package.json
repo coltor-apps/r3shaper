@@ -1,6 +1,6 @@
 {
   "name": "r3shaper",
-  "version": "1.0.0-alpha.8",
+  "version": "1.0.0-alpha.9",
   "description": "Isolate and normalize the API layer of your app.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

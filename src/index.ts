@@ -15,6 +15,7 @@ const resourcePromise: ResourcePromise = ({
   body,
   interceptors,
   headers,
+  meta,
 }) =>
   new Promise((resolve, reject) =>
     apiProvider(
@@ -23,8 +24,9 @@ const resourcePromise: ResourcePromise = ({
         body,
         headers,
         method,
+        meta,
       },
-      data => {
+      (data) => {
         resolve(interceptors.onResponse ? interceptors.onResponse(data) : data);
       },
       reject
@@ -49,6 +51,7 @@ const createResource: ResourceOptions = (
       : options.body,
     interceptors,
     headers: options.headers,
+    meta: options.meta,
   });
 
 const clientResource: (
@@ -57,7 +60,7 @@ const clientResource: (
 ) => ClientResource = (apiProvider, method) => (path, interceptors) =>
   createResource(apiProvider, method, path, interceptors);
 
-export const createClient: ClientOptions = options => {
+export const createClient: ClientOptions = (options) => {
   const apiProvider: ApiProvider = (config, ...callbacks) =>
     options.apiProvider(
       {
